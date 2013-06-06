@@ -39,6 +39,11 @@ if !exists('g:ipy_completefunc')
     let g:ipy_completefunc = 'global'
 endif
 
+" Force open preview window
+if !exists('g:ipy_force_preview')
+    let g:ipy_force_preview = 0
+endif
+
 python << EOF
 reselect = False            # reselect lines after sending from Visual mode
 show_execution_count = True # wait to get numbers for In[43]: feedback?
@@ -424,7 +429,7 @@ def with_subchannel(f,*args):
         try:
             f(*args)
             if monitor_subchannel:
-                update_subchannel_msgs()
+              update_subchannel_msgs(False, vim.vars['ipy_force_preview'])
         except AttributeError: #if kc is None
             echo("not connected to IPython", 'Error')
     return f_with_update
